@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from 'app/interfaces/entities/user';
+// import { Student } from 'app/interfaces/entities/student';
 import { PaginatorParams } from 'app/interfaces/general/paginator-params';
 import { HttpSimpleResponse } from 'app/interfaces/http-responses/http-simple-response';
 import { environment } from 'environments/environment';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class StudentsService {
 
   constructor(
 		private _httpClient: HttpClient
@@ -24,7 +24,7 @@ export class UsersService {
 			},
 		} as any);
 
-		return this._httpClient.get<any>(`${environment.api}/users`, {params});
+		return this._httpClient.get<any>(`${environment.api}/students`, {params});
 	}
 
 	getAll(search: SearchObject): Observable<any> {
@@ -34,11 +34,11 @@ export class UsersService {
 			},
 		} as any);
 
-		return this._httpClient.get<any>(`${environment.api}/users/get-all`, {params});
+		return this._httpClient.get<any>(`${environment.api}/students/get-all`, {params});
 	}
 
 	get(id: string): Observable<any> {
-		return this._httpClient.get<any>(`${environment.api}/users/${id}`);
+		return this._httpClient.get<any>(`${environment.api}/students/${id}`);
 	}
 
 	uploadFile(file: File): Observable<HttpSimpleResponse> {
@@ -49,7 +49,7 @@ export class UsersService {
 		headers.append('Content-Type', 'multipart/form-data');
 		headers.append('Accept', 'application/json');
 
-		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/users/upload-file`, formData, {headers});
+		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/students/upload-file`, formData, {headers});
 	}
 
 	create(data: any): Observable<HttpSimpleResponse> {
@@ -62,21 +62,11 @@ export class UsersService {
 			}
 		}
 
-		if(data.img_changed && data.img)
-			formData.append('img', data.img, data.img?.name)
-		else
-		formData.append('img', '')
-
-		if(data.broker_logo_changed && data.broker_logo)
-			formData.append('broker_logo', data.broker_logo, data.broker_logo?.name)
-		else
-			formData.append('broker_logo', '');
-
 		const headers = new HttpHeaders();
 		headers.append('Content-Type', 'multipart/form-data');
 		headers.append('Accept', 'application/json');
 
-		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/users`, formData, {headers});
+		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/students`, formData, {headers});
 	}
 	update(id: string, data: any): Observable<HttpSimpleResponse> {
 
@@ -89,34 +79,28 @@ export class UsersService {
 			}
 		}
 
-		if(data.img_changed && data.img)
-			formData.append('img', data.img, data.img?.name)
-		else
-		formData.append('img', '')
-
-		if(data.broker_logo_changed && data.broker_logo)
-			formData.append('broker_logo', data.broker_logo, data.broker_logo?.name)
-		else
-			formData.append('broker_logo', '');
-
 		const headers = new HttpHeaders();
 		headers.append('Content-Type', 'multipart/form-data');
 		headers.append('Accept', 'application/json');
 		headers.append('_method', 'PUT');
 
-		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/users/${id}?_method=PUT`, formData, {headers});
+		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/students/${id}?_method=PUT`, formData, {headers});
 	}
 
 	getPropertyEntities(): Observable<any> {
-		return this._httpClient.get<any>(`${environment.api}/users/get-property-entities`);
+		return this._httpClient.get<any>(`${environment.api}/students/get-property-entities`);
 	}
 
-	completeSignUp(usuario: User, token: string): Observable<HttpSimpleResponse> {
-		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/users/complete-signup/${token}`, usuario);
+	completeSignUp(alumno: any, token: string): Observable<HttpSimpleResponse> {
+		return this._httpClient.post<HttpSimpleResponse>(`${environment.api}/students/complete-signup/${token}`, alumno);
 	}
 
 	resendSignUpEmail(id: number): Observable<HttpSimpleResponse> {
-		return this._httpClient.get<HttpSimpleResponse>(`${environment.api}/users/resend-signup-email/${id}`, {});
+		return this._httpClient.get<HttpSimpleResponse>(`${environment.api}/students/resend-signup-email/${id}`, {});
+	}
+
+	getAllLevels(): Observable<any> {
+		return this._httpClient.get<any>(`${environment.api}/get-all-levels`);
 	}
 
 }

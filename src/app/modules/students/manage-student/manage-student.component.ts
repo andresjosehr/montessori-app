@@ -3,113 +3,103 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseAlertType } from '@fuse/components/alert';
-import { Broker } from 'app/interfaces/entities/brokers';
 import { HttpValidationErrorResponse } from 'app/interfaces/http-responses/http-validation-error-response';
-import { BrokersService } from 'app/modules/brokers/service/brokers.service';
 import { EntityPropertiesService } from 'app/services/entity-properties/entity-properties.service';
 import { GlobalService } from 'app/services/global/global.service';
 import { takeUntil } from 'rxjs';
-import { UsersService, SearchObject } from '../service/users.service';
+import { StudentsService, SearchObject } from '../service/students.service';
 
 @Component({
-  selector: 'app-manage-user',
-  templateUrl: './manage-user.component.html',
-  styleUrls: ['./manage-user.component.scss']
+  selector: 'app-manage-student',
+  templateUrl: './manage-student.component.html',
+  styleUrls: ['./manage-student.component.scss']
 })
-export class ManageUserComponent implements OnInit {
+export class ManageStudentComponent implements OnInit {
 
 	alert: {type: FuseAlertType; message: string} = {
 		type: 'success',
 		message: '',
 	};
-	userForm: FormGroup;
+	studentForm: FormGroup;
 	showAlert: boolean = false;
-	userID: string = '';
-	roles: any
-	brokers: Broker[];
+	studentID: string = '';
+	levels: any;
 
   constructor(
 		public _globalService: GlobalService,
 		private _activateRoute: ActivatedRoute,
 		private _formBuilder: FormBuilder,
 		private _router: Router,
-		private _usersService: UsersService,
+		private _studentsService: StudentsService,
 		private _entityPropertiesService: EntityPropertiesService,
-		private _brokersService: BrokersService
 	) { }
 
   ngOnInit(): void {
-		this._brokersService.getAll().subscribe((response) => {
-			this.brokers = response.data
-		});
-		this._entityPropertiesService.getAllRoles().subscribe((response) => {
-			console.log(response)
-			this.roles = response.data;
-		});
 		this.initForm();
 		this._activateRoute.params.subscribe((params) => {
 			if(params.id){
-				this.userID = params.id;
-				this.getUser();
+				this.studentID = params.id;
+				this.getStudent();
 			}
 		});
+		this.getLevels();
 
   }
 
 	initForm(): void{
-		this.userForm = this._formBuilder.group({
-			first_name  : [''],
-			last_name  : [''],
-			email      : [''],
-			phone      : [''],
-			broker_id  : [''],
-			role_id    : [''],
-			img        : [''],
-			verified   : [false],
-			img_changed: [false]
+		this.studentForm = this._formBuilder.group({
+			name                : [''],
+			last_name           : [''],
+			representative_name : [''],
+			representative_phone: [''],
+			level_id            : ['']
 		});
 	}
 
-	getUser(): void{
-		this._usersService.get(this.userID).subscribe((response) => {
-			this.userForm.patchValue(response.data);
+	getLevels(): void{
+		this._studentsService.getAllLevels().subscribe((response) => {
+			this.levels = response.data;
 		});
 	}
 
-	createUser(): void{
+	getStudent(): void{
+		this._studentsService.get(this.studentID).subscribe((response) => {
+			this.studentForm.patchValue(response.data);
+		});
+	}
 
-		console.log(this.userForm.value);
+	createStudent(): void{
 
 	// Return if the form is invalid
-	if (this.userForm.invalid) {
-		this.userForm.markAllAsTouched();
+	if (this.studentForm.invalid) {
+		this.studentForm.markAllAsTouched();
 		return;
 	}
 
 	// Disable the form
-	this.userForm.disable();
-	this.userForm.updateValueAndValidity();
+	this.studentForm.disable();
+	this.studentForm.updateValueAndValidity();
 
 	// Hide the alert
 	this.showAlert = false;
 
 	// Sign in
-	this._usersService
-		.create(this.userForm.value)
+	this._studentsService
+		.create(this.studentForm.value)
 		// takeUntil(this._unsubscribeAll)
 		.pipe()
 		.subscribe(
 			() => {
-				this.userForm.enable();
+				this.studentForm.enable();
 				// navigate with query params
-				this._router.navigate(['/usuarios/lista', {m: 1}]);
+				this._router.navigate(['/alumnos/lista', {m: 1}]);
 			},
 			(response: HttpValidationErrorResponse) => {
 				// Re-enable the form
-				this.userForm.enable();
+				this.studentForm.enable();
 
 				if(response.message === this._globalService.httpValidationErrorMessage) {
-					this.userForm = this._globalService.getValidationErrors(this.userForm, response);
+					this.studentForm = this._globalService.getValidationErrors(this.studentForm, response);
 
 					// Set the alert
 					this.alert = {
@@ -124,34 +114,34 @@ export class ManageUserComponent implements OnInit {
 		);
 	}
 
-	updateUser(): void {
-		this.userForm.markAllAsTouched();
+	updateStudent(): void {
+		this.studentForm.markAllAsTouched();
 		// Return if the form is invalid
-		if (this.userForm.invalid) {
+		if (this.studentForm.invalid) {
 			return;
 		}
 
 		// Disable the form
-		this.userForm.disable();
+		this.studentForm.disable();
 
 		// Hide the alert
 		this.showAlert = false;
 
 		// Sign in
-		this._usersService
-			.update(this.userID, this.userForm.value)
+		this._studentsService
+			.update(this.studentID, this.studentForm.value)
 			.pipe()
 			.subscribe(
 				() => {
-					this.userForm.enable();
-					this._router.navigate(['/usuarios/lista', {m: 2}]);
+					this.studentForm.enable();
+					this._router.navigate(['/alumnos/lista', {m: 2}]);
 				},
 				(response: HttpValidationErrorResponse) => {
 					// Re-enable the form
-					this.userForm.enable();
+					this.studentForm.enable();
 
 					if(response.message === this._globalService.httpValidationErrorMessage) {
-						this.userForm = this._globalService.getValidationErrors(this.userForm, response);
+						this.studentForm = this._globalService.getValidationErrors(this.studentForm, response);
 
 						// Set the alert
 						this.alert = {

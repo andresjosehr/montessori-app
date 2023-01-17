@@ -1,0 +1,80 @@
+<div class="w-full max-w-5xl m-auto">
+	<!-- Form -->
+	<form>
+			<!-- Section -->
+			<div class="grid sm:grid-cols-2 gap-8 w-full mb-8">
+				<div class="w-full col-span-1">
+						<div class="text-3xl font-bold">Control de pagos</div>
+						<div class="text-secondary">Panel para gestionar el control de pagos por fecha</div>
+				</div>
+				<div class="w-full col-span-1">
+					<div class="w-18 text-center" style="margin-left: auto;">
+						<img class="w-full" src="/assets/bcv.png" alt="">
+						<div class="mt-1">{{this.dolarPrice}} Bs</div>
+					</div>
+			</div>
+			</div>
+			<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+				<mat-tab label="Control mensual">
+					<div class="grid grid-cols-4 gap-y-3 gap-x-3 w-full mt-8">
+						<div class="col-span-4">
+							<div class="w-full">
+								<mat-form-field class='w-full'>
+									<mat-label>Año de gestion</mat-label>
+									<mat-select [value]="currentYear">
+										<mat-option [value]="year" *ngFor="let year of yearsSelect">{{year}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+						<div *ngFor="let month of months" class="col-span-1">
+							<div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+										<div class="flex items-start justify-between">
+												<div class="text-3xl text-slate-500 font-bold tracking-tight leading-6 truncate">{{month}}</div>
+										</div>
+										<div class="flex flex-col items-center mt-2">
+											<div class="mt-3 w-full text-base font-medium tracking-tight leading-none">
+												<div class="flex">
+													<div class="w-2/3 text-left">Alumnos morosos</div>
+													<div class="w-1/3 text-right">{{15}}</div>
+												</div>
+												<hr class="my-3">
+												<div class="flex">
+													<div class="w-2/3 text-left">Deuda total</div>
+													<div class="w-1/3 text-right">{{30}}</div>
+												</div>
+												<hr class="my-3">
+												<div class="flex">
+													<div class="w-2/3 text-left">Monto abonado</div>
+													<div class="w-1/3 text-right">12.499 Bs</div>
+												</div>
+											</div>
+										</div>
+								</div>
+							</div>
+					</div>
+				</mat-tab>
+				<mat-tab label="Valor de mensualidad">
+					<div class="p-5">
+						<div class="w-fit m-auto">
+							<mat-form-field class="w-100 m-auto" appearance="fill">
+								<mat-label>Valor expresado en dolares de mensualidad</mat-label>
+								<input [formControl]="priceControl" class="text-center" matInput type="text">
+							</mat-form-field>
+						</div>
+						<div class="w-100 m-auto">
+							<fuse-alert [type]="'warning'">
+								<span fuseAlertTitle>Atención</span>
+								El monto expresedo en el campo sera registrado como monto en dolares y la conversion se hará a bolivares a tasa de BCV
+							</fuse-alert>
+						</div>
+						<div class="w-100 m-auto my-5">
+							<button (click)="savePrice()" class="w-full" mat-button style="background-color: #0f172a; color:white">Guardar</button>
+						</div>
+					</div>
+				</mat-tab>
+			</mat-tab-group>
+
+	</form>
+
+</div>

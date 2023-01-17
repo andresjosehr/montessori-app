@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ManageUserComponent} from './manage-user.component';
+import {ManageStudentComponent} from './manage-student.component';
 import {FileInputModule} from 'app/modules/shared/file-input/file-input.module';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -13,7 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
-    ManageUserComponent
+    ManageStudentComponent
   ],
   imports: [
     CommonModule,
@@ -27,4 +27,4 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 		FileInputModule
   ]
 })
-export class ManageUserModule { }
+export class ManageStudentModule { }

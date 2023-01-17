@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersListComponent } from './users-list.component';
+import { StudentsListComponent } from './students-list.component';
 import { FileInputModule } from 'app/modules/shared/file-input/file-input.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
-    UsersListComponent
+    StudentsListComponent
   ],
   imports: [
     CommonModule,
@@ -37,4 +37,4 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 		FileInputModule,
   ]
 })
-export class UsersListModule { }
+export class StudentsListModule { }

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { usersRoutes } from './users.routing';
-import { ManageUserModule } from './manage-user/manage-user.module';
-import { UsersListModule } from './users-list/users-list.module';
+import { studentsRoutes } from './students.routing';
+import { ManageStudentModule } from './manage-student/manage-student.module';
+import { StudentsListModule } from './students-list/students-list.module';
 
 
 
@@ -11,9 +11,9 @@ import { UsersListModule } from './users-list/users-list.module';
   declarations: [],
   imports: [
     CommonModule,
-		RouterModule.forChild(usersRoutes),
-		ManageUserModule,
-		UsersListModule
+		RouterModule.forChild(studentsRoutes),
+		ManageStudentModule,
+		StudentsListModule
   ]
 })
-export class UsersModule { }
+export class StudentsModule { }

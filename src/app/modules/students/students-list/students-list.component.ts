@@ -6,18 +6,18 @@ import { PaginatorEvent } from 'app/interfaces/general/paginator-event';
 import { PaginatorParams } from 'app/interfaces/general/paginator-params';
 import { GlobalService } from 'app/services/global/global.service';
 import { Subject, takeUntil } from 'rxjs';
-import { UsersService, SearchObject } from '../service/users.service';
+import { StudentsService, SearchObject } from '../service/students.service';
 
 @Component({
-  selector: 'app-users-list',
-  templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.scss']
+  selector: 'app-students-list',
+  templateUrl: './students-list.component.html',
+  styleUrls: ['./students-list.component.scss']
 })
-export class UsersListComponent implements OnInit {
+export class StudentsListComponent implements OnInit {
 
-	columns: Array<string> = ['id', 'nombres', 'email', 'role', 'broker_phone', 'broker_address', 'status','acciones'];
+	columns: Array<string> = ['id', 'name', 'last_name', 'representative_name', 'representative_phone', 'Grado', 'acciones'];
 	dataSource: MatTableDataSource<any>;
-	usersPaginated: any;
+	studentsPaginated: any;
 	m: '1' | '2' | null = null;
 	_unsubscribeAll: Subject<any> = new Subject<any>();
 	//
@@ -30,7 +30,7 @@ export class UsersListComponent implements OnInit {
 
 	seachFormGroup: FormGroup;
   constructor(
-		private _usersService: UsersService,
+		private _studentsService: StudentsService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _formBuilder: FormBuilder,
@@ -38,7 +38,7 @@ export class UsersListComponent implements OnInit {
 	) { }
 
 	paginate(event: PaginatorEvent): void {
-		this.getUsers(this.getValues(), {page: event.pageIndex + 1, perPage: event.pageSize});
+		this.getStudents(this.getValues(), {page: event.pageIndex + 1, perPage: event.pageSize});
 	}
 
   ngOnInit(): void {
@@ -52,13 +52,13 @@ export class UsersListComponent implements OnInit {
 				this.m = params.m;
 			}
 		});
-		this.getUsers({});
+		this.getStudents({});
   }
 
-	getUsers(search: SearchObject, paginatorParams: PaginatorParams = {page: 1, perPage: 10}): void {
-		this._usersService.getList(search, paginatorParams).subscribe((response: any) => {
+	getStudents(search: SearchObject, paginatorParams: PaginatorParams = {page: 1, perPage: 10}): void {
+		this._studentsService.getList(search, paginatorParams).subscribe((response: any) => {
 			this.dataSource = new MatTableDataSource(response.data.data);
-			this.usersPaginated = response.data;
+			this.studentsPaginated = response.data;
 		});
 	}
 
@@ -72,19 +72,19 @@ export class UsersListComponent implements OnInit {
 		this.file = file;
 	}
 
-	goToUser(id: string): void{
-		this._router.navigate(['usuarios', 'editar', id]);
+	goToStudent(id: string): void{
+		this._router.navigate(['alumnos', 'editar', id]);
 	}
 
 	uploadFile(): void{
-		this._usersService.uploadFile(this.file).subscribe((response) => {
+		this._studentsService.uploadFile(this.file).subscribe((response) => {
 			console.log(response);
 		});
 	}
 
-	filterUsers(): void {
+	filterStudents(): void {
 		console.log(this.getValues());
-		this.getUsers(this.getValues());
+		this.getStudents(this.getValues());
 		// const filterValue = value.toLowerCase();
 		// return this.files.filter(option => option.toLowerCase().includes(filterValue));
 	}
@@ -107,14 +107,14 @@ export class UsersListComponent implements OnInit {
 	}
 
 	export(): void{
-		this._usersService.getAll(this.getValues()).subscribe((response) => {
-			const fileName = 'useros';
+		this._studentsService.getAll(this.getValues()).subscribe((response) => {
+			const fileName = 'studentos';
 			this._globalService.saveDataAsCSV(response.data, fileName);
 		});
 	}
 
 	resendSignUpEmail(id: number): void{
-		this._usersService.resendSignUpEmail(id).subscribe((response) => {
+		this._studentsService.resendSignUpEmail(id).subscribe((response) => {
 			this._globalService.openSnackBar('Correo enviado', 5000, 'success');
 			console.log(response);
 		});

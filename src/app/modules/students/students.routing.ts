@@ -1,19 +1,19 @@
 import {Route} from '@angular/router';
-import { UsersListComponent } from './users-list/users-list.component';
-import { ManageUserComponent } from './manage-user/manage-user.component';
+import { StudentsListComponent } from './students-list/students-list.component';
+import { ManageStudentComponent } from './manage-student/manage-student.component';
 
-export const usersRoutes: Route[] = [
+export const studentsRoutes: Route[] = [
 	{
 		path: 'lista',
-		component: UsersListComponent,
+		component: StudentsListComponent,
 	},
 	{
 		path: 'crear',
-		component: ManageUserComponent,
+		component: ManageStudentComponent,
 	},
 	{
 		path: 'editar/:id',
-		component: ManageUserComponent,
+		component: ManageStudentComponent,
 	},
     {
 		path: '',
