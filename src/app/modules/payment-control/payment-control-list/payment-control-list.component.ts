@@ -95,7 +95,6 @@ export class PaymentControlListComponent implements OnInit {
 				});
 			}
 		});
-
 	}
 
 }

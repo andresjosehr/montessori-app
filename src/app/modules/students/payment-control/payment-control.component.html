@@ -242,8 +242,10 @@
 												<tr>
 													<th>Pagador</th>
 													<th>Fecha de pago</th>
-													<th>Monto de pago</th>
+													<th>Monto de pago (VES)</th>
+													<th>Monto de pago (USD)</th>
 													<th>Referencia</th>
+													<th>Acción</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -251,7 +253,13 @@
 													<td>{{payment.full_name ? payment.full_name : '-'}}</td>
 													<td>{{payment.payment_date ? payment.payment_date : '-'}}</td>
 													<td>{{payment.ves_amount ? payment.ves_amount : '-'}}</td>
+													<td>{{payment.usd_amount ? payment.usd_amount : '-'}}</td>
 													<td>{{payment.reference_number ? payment.reference_number : '-'}}</td>
+													<td>
+														<button mat-icon-button (click)="openDialog(payment.id)">
+															<mat-icon>delete</mat-icon>
+														</button>
+													</td>
 												</tr>
 										</table>
 									</div>

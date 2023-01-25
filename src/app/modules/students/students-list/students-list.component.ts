@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { PaginatorEvent } from 'app/interfaces/general/paginator-event';
 import { PaginatorParams } from 'app/interfaces/general/paginator-params';
 import { GlobalService } from 'app/services/global/global.service';
@@ -34,7 +35,8 @@ export class StudentsListComponent implements OnInit {
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _formBuilder: FormBuilder,
-		private _globalService: GlobalService
+		private _globalService: GlobalService,
+		private _fuseConfirmationService: FuseConfirmationService
 	) { }
 
 	paginate(event: PaginatorEvent): void {
@@ -124,5 +126,37 @@ export class StudentsListComponent implements OnInit {
 		});
 	}
 
+	deleteStudent(id: number): void{
 
+		const dialogRef = this._fuseConfirmationService.open({
+			title: 'Atención',
+			message: '¿Está seguro que desea eliminar este alumno? La información de pagos también se eliminará. Esta acción no se puede deshacer.',
+			icon:{
+				show: true,
+				name: 'heroicons_outline:exclamation',
+				color: 'warning',
+			},
+			actions: {
+				confirm: {
+					show: true,
+					label: "Confirmar",
+					color: "accent"
+				},
+				cancel: {
+					show: true,
+					label: "Cancelar"
+				}
+			},
+			dismissible: true
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if(result === 'confirmed'){
+				this._studentsService.delete(id).subscribe((response) => {
+					this._globalService.openSnackBar('Alumno eliminado', 5000, 'success');
+					this.dataSource.data = this.dataSource.data.filter((student) => student.id !== id);
+				});
+			}
+		});
+	}
 }

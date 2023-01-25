@@ -17,6 +17,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatRadioModule} from '@angular/material/radio';
+import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
 
 
@@ -45,7 +46,8 @@ import {MatRadioModule} from '@angular/material/radio';
 		FileInputModule,
 		MatIconModule,
 		MatDatepickerModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		FuseConfirmationModule
   ]
 })
 export class PaymentControlModule { }

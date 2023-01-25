@@ -111,6 +111,10 @@ export class StudentsService {
 		return this._httpClient.get<any>(`${environment.api}/students/payment-control/${studentID}/${year}`);
 	}
 
+	delete(id: string | number): Observable<HttpSimpleResponse> {
+		return this._httpClient.delete<HttpSimpleResponse>(`${environment.api}/students/${id}`);
+	}
+
 }
 
 interface studentPayment {

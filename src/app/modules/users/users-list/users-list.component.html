@@ -125,6 +125,9 @@
 							<div class="1/2">
 								<button (click)="goToUser(user.id)" class="rounded bg-primary-300 text-on-primary-300" mat-stroked-button>Editar</button>
 							</div>
+							<div class="1/2">
+								<button (click)="deleteUser(user.id)" class="rounded bg-red-300 text-red-800" mat-stroked-button>Eliminar</button>
+							</div>
 							<div *ngIf='!user.email_verified_at' class="1/2">
 								<button (click)="resendSignUpEmail(user.id)" class="rounded bg-primary-300 text-on-primary-300" mat-stroked-button>Reenviar Correo</button>
 							</div>

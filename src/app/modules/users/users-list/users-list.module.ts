@@ -13,6 +13,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 		FuseAlertModule,
 		MatPaginatorModule,
 		FileInputModule,
+		FuseConfirmationModule
   ]
 })
 export class UsersListModule { }

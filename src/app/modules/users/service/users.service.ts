@@ -119,6 +119,10 @@ export class UsersService {
 		return this._httpClient.get<HttpSimpleResponse>(`${environment.api}/users/resend-signup-email/${id}`, {});
 	}
 
+	delete(id: string | number): Observable<HttpSimpleResponse> {
+		return this._httpClient.delete<HttpSimpleResponse>(`${environment.api}/users/${id}`);
+	}
+
 }
 
 

@@ -30,4 +30,8 @@ export class PaymentControlService {
 		return this._httpClient.get(`${environment.api}/payment-control/get-month-price`);
 	 }
 
+	 delete(id: number | string): Observable<any> {
+		return this._httpClient.delete(`${environment.api}/payment-control/${id}`);
+	 }
+
 }

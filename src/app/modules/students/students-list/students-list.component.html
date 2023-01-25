@@ -118,8 +118,14 @@
 							</div>
 
 							<div class="1/2">
-								<button (click)="goToPaymentControl(student.id)" class="rounded bg-primary-300 text-on-primary-300" mat-mini-fab>
+								<button (click)="goToPaymentControl(student.id)" class="rounded bg-green-300 text-green-800" mat-mini-fab>
 									<mat-icon> attach_money</mat-icon>
+								</button>
+							</div>
+
+							<div class="1/2">
+								<button (click)="deleteStudent(student.id)" class="rounded bg-red-300 text-red-800" mat-mini-fab>
+									<mat-icon> delete</mat-icon>
 								</button>
 							</div>
 						</div>
