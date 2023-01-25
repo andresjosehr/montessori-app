@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { studentsRoutes } from './students.routing';
 import { ManageStudentModule } from './manage-student/manage-student.module';
 import { StudentsListModule } from './students-list/students-list.module';
+import { PaymentControlModule } from './payment-control/payment-control.module';
 
 
 
@@ -12,8 +13,9 @@ import { StudentsListModule } from './students-list/students-list.module';
   imports: [
     CommonModule,
 		RouterModule.forChild(studentsRoutes),
+		PaymentControlModule,
 		ManageStudentModule,
-		StudentsListModule
+		StudentsListModule,
   ]
 })
 export class StudentsModule { }

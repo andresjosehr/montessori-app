@@ -13,6 +13,7 @@ export class PaymentControlListComponent implements OnInit {
 
 	yearsSelect = [];
 	monthsControl;
+	currentMonthPrice: number;
 	currentYear = new Date().getFullYear();
 	months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] as string[];
 	priceControl: FormControl = new FormControl(0);
@@ -33,11 +34,13 @@ export class PaymentControlListComponent implements OnInit {
 			this.monthsControl = response.data
 			const years = this.monthsControl.map(month => month.year);
 			this.yearsSelect = years.filter((year, index) => years.indexOf(year) === index);
-			console.log(this.yearsSelect);
 		})
 
 		this._paymentControlService.getMonthPrice().subscribe(response => {
-			console.log(response);
+			this.priceControl.setValue(response.data);
+			const price = this.priceControl.value.replace(/,/g, '.');
+			this.currentMonthPrice = Number(price);
+
 		})
 
 		// Allow only numbers with 3 decimals. If user write dot, it will be replaced by comma.
@@ -88,6 +91,7 @@ export class PaymentControlListComponent implements OnInit {
 			if(result === 'confirmed'){
 				this._paymentControlService.updateMonthPrice(this.priceControl.value).subscribe(response => {
 					this._globalService.openSnackBar('Precio actualizado correctamente', 4000, 'success');
+					this.currentMonthPrice = Number(this.priceControl.value.replace(/,/g, '.'));
 				});
 			}
 		});

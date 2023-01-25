@@ -1,24 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StudentsListComponent } from './students-list.component';
-import { FileInputModule } from 'app/modules/shared/file-input/file-input.module';
+import { PaymentControlComponent } from './payment-control.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { FuseAlertModule } from '@fuse/components/alert';
-import { MatSelectModule } from '@angular/material/select';
+import { FileInputModule } from 'app/modules/shared/file-input/file-input.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatRadioModule} from '@angular/material/radio';
+
+
+
 
 
 @NgModule({
   declarations: [
-    StudentsListComponent
+    PaymentControlComponent
   ],
   imports: [
     CommonModule,
@@ -32,11 +38,14 @@ import { MatIconModule } from '@angular/material/icon';
 		MatTooltipModule,
 		MatInputModule,
 		MatTableModule,
+		MatRadioModule,
 		NgxMatSelectSearchModule,
 		FuseAlertModule,
 		MatPaginatorModule,
 		FileInputModule,
-		MatIconModule
+		MatIconModule,
+		MatDatepickerModule,
+		MatNativeDateModule
   ]
 })
-export class StudentsListModule { }
+export class PaymentControlModule { }

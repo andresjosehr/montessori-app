@@ -76,6 +76,10 @@ export class StudentsListComponent implements OnInit {
 		this._router.navigate(['alumnos', 'editar', id]);
 	}
 
+	goToPaymentControl(id: string): void{
+		this._router.navigate(['alumnos', 'control-de-pago', id]);
+	}
+
 	uploadFile(): void{
 		this._studentsService.uploadFile(this.file).subscribe((response) => {
 			console.log(response);

@@ -103,8 +103,24 @@ export class StudentsService {
 		return this._httpClient.get<any>(`${environment.api}/get-all-levels`);
 	}
 
+	registerPayment(studentID: any, data: studentPayment): Observable<any> {
+		return this._httpClient.post<any>(`${environment.api}/students/register-payment/${studentID}`, data);
+	}
+
+	getPayments(studentID: any, year: number): Observable<any> {
+		return this._httpClient.get<any>(`${environment.api}/students/payment-control/${studentID}/${year}`);
+	}
+
 }
 
+interface studentPayment {
+	full_name: string;
+	document: string;
+	payment_date: string;
+	payment_method: string;
+	reference_number: number;
+	payer_type: string;
+}
 
 export interface SearchObject{
 	city?: string;

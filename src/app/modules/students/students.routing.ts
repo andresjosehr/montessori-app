@@ -1,6 +1,7 @@
 import {Route} from '@angular/router';
 import { StudentsListComponent } from './students-list/students-list.component';
 import { ManageStudentComponent } from './manage-student/manage-student.component';
+import { PaymentControlComponent } from './payment-control/payment-control.component';
 
 export const studentsRoutes: Route[] = [
 	{
@@ -14,6 +15,10 @@ export const studentsRoutes: Route[] = [
 	{
 		path: 'editar/:id',
 		component: ManageStudentComponent,
+	},
+	{
+		path: 'control-de-pago/:id',
+		component: PaymentControlComponent,
 	},
     {
 		path: '',
