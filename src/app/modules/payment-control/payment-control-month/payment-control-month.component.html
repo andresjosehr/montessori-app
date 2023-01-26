@@ -1,0 +1,149 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
+<div class="w-full">
+	<div class="grid sm:grid-cols-2 gap-8 w-full mb-6">
+		<div class="w-full col-span-1">
+			<div class="text-3xl font-bold">Control de pagos</div>
+			<div class="text-secondary">Gestiona la informacion de pago para el mes de: <strong>Enero</strong> de <strong>2023</strong></div>
+		</div>
+		<div class="w-full col-span-1">
+			<div class='text-right'>
+				<div class="w-18 text-center" style="margin-left: auto;">
+					<img class="w-full" src="/assets/bcv.png" alt="">
+					<div class="mt-1">{{this.dolarBCV}} Bs</div>
+				</div>
+			</div>
+		</div>
+		<div class="w-full col-span-1">
+			<!-- Success -->
+			<fuse-alert *ngIf="m" [type]="'success'">
+				<span fuseAlertTitle>Exito</span>
+				El alumno ha sido
+				<span *ngIf="m==='1'">creado</span>
+				<span *ngIf="m==='2'">actualizado</span>
+				exitosamente
+			</fuse-alert>
+		</div>
+	</div>
+	<div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+		<!-- Section -->
+		<div class="grid grid-cols-12">
+			<div class="col-span-3">
+				<div class="text-lg font-medium tracking-tight leading-6 truncate">Detalles de alumno</div>
+			</div>
+			<div class="col-span-9">
+				<div class="flex gap-3 justify-end">
+					<div class="w-1/5">
+						<mat-form-field class="w-full">
+							<mat-label>Año de gestion</mat-label>
+							<mat-select [formControl]="yearFC">
+								<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="w-2/5">
+						<mat-form-field class="w-full">
+							<mat-label>Mes</mat-label>
+							<mat-select [formControl]="monthFC">
+								<mat-option *ngFor="let month of months; let i = index" [value]="i+1">{{month}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+				<table
+						class="min-w-240 overflow-y-visible"
+						mat-table
+						multiTemplateDataRows
+						[dataSource]="paymentData">
+
+						<!-- id -->
+						<ng-container matColumnDef="nombre">
+							<th mat-header-cell *matHeaderCellDef>Nombre estudiante</th>
+							<td mat-cell *matCellDef="let student">
+								<span class="font-medium">
+									{{student.name}} {{student.last_name}}
+								</span>
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="status">
+							<th mat-header-cell *matHeaderCellDef>Estado</th>
+							<td mat-cell *matCellDef="let student">
+								<span class="font-medium">
+									<span *ngIf="getPaymentSum(student.payments) == 0" class="text-red-600">Pendiente</span>
+									<span *ngIf="getPaymentSum(student.payments) < this.currentMonthPrice && getPaymentSum(student.payments) > 0" class="text-yellow-600">Parcial</span>
+									<span *ngIf="getPaymentSum(student.payments) == this.currentMonthPrice" class="text-green-600">Pagado</span>
+								</span>
+							</td>
+						</ng-container>
+
+
+						<ng-container matColumnDef="pagador">
+							<th mat-header-cell *matHeaderCellDef>Estado</th>
+							<td mat-cell *matCellDef="let payment">
+								<span class="font-medium">
+								</span>
+							</td>
+						</ng-container>
+
+
+						<ng-container matColumnDef="fecha_pago">
+							<th mat-header-cell *matHeaderCellDef>Pagos realizados</th>
+							<td mat-cell *matCellDef="let payment">
+								<span class="font-medium">
+									{{payment.payments.length || 0}}
+								</span>
+							</td>
+						</ng-container>
+
+
+
+
+						<!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+						<ng-container matColumnDef="expandedDetail">
+							<td mat-cell *matCellDef="let element" [attr.colspan]="columns.length">
+								<div class="example-element-detail w-full"
+										[@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+									<div class="w-full" style="padding: 13px 10px 30px;">
+										<table class="simple-table">
+											<thead>
+												<tr>
+													<th>Pagador</th>
+													<th>Fecha de pago</th>
+													<th>Monto de pago (VES)</th>
+													<th>Monto de pago (USD)</th>
+													<th>Referencia</th>
+													<th>Acción</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let payment of element.payments">
+													<td>{{payment.full_name ? payment.full_name : '-'}}</td>
+													<td>{{payment.payment_date ? payment.payment_date : '-'}}</td>
+													<td>{{payment.ves_amount ? payment.ves_amount : '-'}}</td>
+													<td>{{payment.usd_amount ? payment.usd_amount : '-'}}</td>
+													<td>{{payment.reference_number ? payment.reference_number : '-'}}</td>
+													<td>
+														<mat-icon class="text-red-800 cursor-pointer">delete</mat-icon>
+													</td>
+												</tr>
+										</table>
+									</div>
+								</div>
+							</td>
+						</ng-container>
+
+
+					<tr mat-header-row *matHeaderRowDef="columns"></tr>
+					<tr class="cursor-pointer" mat-row *matRowDef="let element; columns: columns;"
+							class="example-element-row"
+							[class.example-expanded-row]="expandedElement === element"
+							(click)="expandedElement = expandedElement === element ? null : element">
+					</tr>
+					<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+				</table>
+		</div>
+	</div>
+</div>

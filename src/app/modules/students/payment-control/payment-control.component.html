@@ -185,49 +185,33 @@
 							<th mat-header-cell *matHeaderCellDef>Estado</th>
 							<td mat-cell *matCellDef="let payment">
 								<span class="font-medium">
-									<span *ngIf="!payment.id" class="text-red-600">Pendiente</span>
-									<span *ngIf="payment.id" class="text-green-600">Pagado</span>
+									<span *ngIf="getPaymentSum(payment) == 0" class="text-red-600">Pendiente</span>
+									<span *ngIf="getPaymentSum(payment) < this.currentMonthPrice && getPaymentSum(payment) > 0" class="text-yellow-600">Parcial</span>
+									<span *ngIf="getPaymentSum(payment) == this.currentMonthPrice" class="text-green-600">Pagado</span>
 								</span>
 							</td>
 						</ng-container>
 
 
 						<ng-container matColumnDef="pagador">
-							<th mat-header-cell *matHeaderCellDef>Pagador</th>
+							<th mat-header-cell *matHeaderCellDef>Monto Abonado (USD)</th>
 							<td mat-cell *matCellDef="let payment">
 								<span class="font-medium">
-									{{payment.id ? payment.full_name : '-'}}
+									{{getPaymentSum(payment) || 0}} USD
 								</span>
 							</td>
 						</ng-container>
 
 
 						<ng-container matColumnDef="fecha_pago">
-							<th mat-header-cell *matHeaderCellDef>Fecha de pago</th>
+							<th mat-header-cell *matHeaderCellDef>Pagos realizados</th>
 							<td mat-cell *matCellDef="let payment">
 								<span class="font-medium">
-									{{payment.id ? payment.payment_date : '-'}}
+									{{payment.payments.length || 0}}
 								</span>
 							</td>
 						</ng-container>
 
-						<ng-container matColumnDef="monto_pagado">
-							<th mat-header-cell *matHeaderCellDef>Monto de pago</th>
-							<td mat-cell *matCellDef="let payment">
-								<span class="font-medium">
-									{{payment.id ? payment.ves_amount : '-'}}
-								</span>
-							</td>
-						</ng-container>
-
-						<ng-container matColumnDef="referencia">
-							<th mat-header-cell *matHeaderCellDef>Referencia</th>
-							<td mat-cell *matCellDef="let payment">
-								<span class="font-medium">
-									{{payment.id ? payment.reference_number : '-'}}
-								</span>
-							</td>
-						</ng-container>
 
 
 
@@ -256,9 +240,7 @@
 													<td>{{payment.usd_amount ? payment.usd_amount : '-'}}</td>
 													<td>{{payment.reference_number ? payment.reference_number : '-'}}</td>
 													<td>
-														<button mat-icon-button (click)="openDialog(payment.id)">
-															<mat-icon>delete</mat-icon>
-														</button>
+														<mat-icon class="text-red-800 cursor-pointer">delete</mat-icon>
 													</td>
 												</tr>
 										</table>

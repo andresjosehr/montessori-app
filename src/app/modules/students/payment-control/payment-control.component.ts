@@ -26,7 +26,7 @@ import { StudentsService, SearchObject } from '../service/students.service';
 })
 export class PaymentControlComponent implements OnInit {
 
-  columns: Array<string> = ['mes', 'estado', 'pagador', 'fecha_pago', 'monto_pagado', 'referencia'];
+  columns: Array<string> = ['mes', 'estado', 'pagador', 'fecha_pago'];
 	dataSource: MatTableDataSource<any>;
 	studentsPaginated: any;
 	m: '1' | '2' | null = null;
@@ -252,6 +252,12 @@ export class PaymentControlComponent implements OnInit {
 				});
 			}
 		});
+	}
+
+	getPaymentSum(payment): number{
+		return payment.payments.reduce((acc, payment) => {
+			return acc + payment.usd_amount
+		}, 0);
 	}
 
 }

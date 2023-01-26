@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GlobalService } from 'app/services/global/global.service';
 import { PaymentControlService } from '../service/payment-control.service';
@@ -19,16 +20,23 @@ export class PaymentControlListComponent implements OnInit {
 	priceControl: FormControl = new FormControl(0);
 	dolarPrice: number;
 
+	paymentsSummaryByYear = [];
+
   constructor(
 		private _paymentControlService: PaymentControlService,
 		private _fuseConfirmationService: FuseConfirmationService,
-		private _globalService: GlobalService
+		private _globalService: GlobalService,
+		private _router: Router
 	) { }
 
   ngOnInit(): void {
 		this._paymentControlService.getDolarBCV().subscribe(response => {
 			this.dolarPrice = response.data;
 		});
+
+		this._paymentControlService.getPaymentsByYear(this.currentYear).subscribe(response => {
+			this.paymentsSummaryByYear = response.data;
+		})
 
 		this._paymentControlService.getYears().subscribe(response => {
 			this.monthsControl = response.data
@@ -38,21 +46,20 @@ export class PaymentControlListComponent implements OnInit {
 
 		this._paymentControlService.getMonthPrice().subscribe(response => {
 			this.priceControl.setValue(response.data);
-			const price = this.priceControl.value.replace(/,/g, '.');
-			this.currentMonthPrice = Number(price);
+			this.currentMonthPrice = this.priceControl.value;
 
 		})
 
 		// Allow only numbers with 3 decimals. If user write dot, it will be replaced by comma.
 		this.priceControl.valueChanges.subscribe(value => {
 			// Erase all non numeric characters (except comma and dot)
-			value = value.replace(/[^0-9.,]/g, '');
+			// value = value.replace(/[^0-9.,]/g, '');
 
 			// If user write dot, replace it by comma
-			value = value.replace(/\./g, ',');
+			// value = value.replace(/\./g, ',');
 
 			// If user write more than one comma, erase all commas except the last one
-			value = value.replace(/,(?=[^,]*,)/g, '');
+			// value = value.replace(/,(?=[^,]*,)/g, '');
 
 
 			this.priceControl.setValue(value, {emitEvent: false});
@@ -95,6 +102,11 @@ export class PaymentControlListComponent implements OnInit {
 				});
 			}
 		});
+	}
+
+	goToPaymentMonth(month: number): void {
+		const year = this.currentYear;
+		this._router.navigate([`/control-de-pagos/${year}/${month+1}`]);
 	}
 
 }
