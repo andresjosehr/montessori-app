@@ -24,240 +24,356 @@
 			</fuse-alert>
 		</div>
 	</div>
-	<div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mb-5">
-		<!-- Section -->
-		<div class="grid grid-cols-12 mb-7">
-			<div class="col-span-6">
-				<div class="text-lg font-medium tracking-tight leading-6 truncate">Registrar pago de mensualidad</div>
-				<div>Valor de mensualidad (USD): <strong>{{this.currentMonthPrice}} USD</strong></div>
-				<div>Valor de mensualidad (VES): <strong>{{(this.currentMonthPrice * this.dolarBCV) | number: '1.2-2'}} VES</strong></div>
-			</div>
-			<div class="col-span-6">
-				<div class="w-fit ml-auto" [formGroup]="paymentFG">
-					<div class="mb-2">
-						<strong>Entidad que realiza el pago</strong>
+
+	<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+		<mat-tab label="Pago mensualidades">
+			<div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mb-5">
+				<!-- Section -->
+				<div class="grid grid-cols-12 mb-7">
+					<div class="col-span-6">
+						<div class="text-lg font-medium tracking-tight leading-6 truncate">Registrar pago de mensualidad</div>
+						<div>Valor de mensualidad (USD): <strong>{{this.currentMonthPrice}} USD</strong></div>
+						<div>Valor de mensualidad (VES): <strong>{{(this.currentMonthPrice * this.dolarBCV) | number: '1.2-2'}} VES</strong></div>
 					</div>
-					<mat-radio-group formControlName="payer_type" aria-label="Select an option">
-						<mat-radio-button style="margin-right: 20px" value="Natural">Persona Natural</mat-radio-button>
-						<mat-radio-button value="Juridico">Entidad Juridica</mat-radio-button>
-					</mat-radio-group>
-				</div>
-			</div>
-		</div>
-		<div [formGroup]="paymentFG" class="grid grid-cols-12 gap-5">
-			<div class="col-span-3">
-				<div class="grid grid-cols-12 gap-2">
-					<div class="col-span-5">
-						<mat-form-field class="w-full">
-							<mat-label>Año</mat-label>
-							<mat-select formControlName="year">
-								<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-							</mat-select>
-						</mat-form-field>
-					</div>
-					<div class="col-span-7">
-						<mat-form-field class="w-full">
-							<mat-label>Mes</mat-label>
-							<mat-select formControlName="month">
-								<mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
-							</mat-select>
-						</mat-form-field>
+					<div class="col-span-6">
+						<div class="w-fit ml-auto" [formGroup]="paymentFG">
+							<div class="mb-2">
+								<strong>Entidad que realiza el pago</strong>
+							</div>
+							<mat-radio-group formControlName="payer_type" aria-label="Select an option">
+								<mat-radio-button style="margin-right: 20px" value="Natural">Persona Natural</mat-radio-button>
+								<mat-radio-button value="Juridico">Entidad Juridica</mat-radio-button>
+							</mat-radio-group>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-span-3">
-				<mat-form-field class="w-full">
-					<mat-label>Monto Abonado (VES)</mat-label>
-					<input formControlName="ves_amount" id='name' type="text" matInput>
-				</mat-form-field>
-			</div>
-			<div class="col-span-3">
-				<mat-form-field class="w-full">
-					<mat-label>Monto Abonado (USD)</mat-label>
-					<input formControlName="usd_amount" id='name' type="text" matInput>
-				</mat-form-field>
-			</div>
-			<div class="col-span-3">
-				<mat-form-field class="w-full">
-					<mat-label>Fecha de abono</mat-label>
-						<input formControlName="payment_date" [value]="currentDate" (click)="picker.open()" matInput [matDatepicker]="picker">
-						<mat-hint>MM/DD/YYYY</mat-hint>
-						<mat-datepicker #picker></mat-datepicker>
-				</mat-form-field>
-			</div>
-		</div>
-		<div *ngIf="paymentFG.get('payer_type').value" [formGroup]="paymentFG" class="grid grid-cols-12 gap-5">
-			<div class="col-span-3">
-				<mat-form-field class="w-full">
-					<mat-label *ngIf="paymentFG.get('payer_type').value==='Natural'">Nombres y Apellidos</mat-label>
-					<mat-label *ngIf="paymentFG.get('payer_type').value==='Juridico'">Razon social</mat-label>
-					<input formControlName="full_name" id='name' type="text" matInput>
-				</mat-form-field>
-			</div>
-			<div class="col-span-3">
-				<div class="grid grid-cols-12 gap-2">
+				<div [formGroup]="paymentFG" class="grid grid-cols-12 gap-5">
+					<div class="col-span-3">
+						<div class="grid grid-cols-12 gap-2">
+							<div class="col-span-5">
+								<mat-form-field class="w-full">
+									<mat-label>Año</mat-label>
+									<mat-select formControlName="year">
+										<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div class="col-span-7">
+								<mat-form-field class="w-full">
+									<mat-label>Mes</mat-label>
+									<mat-select formControlName="month">
+										<mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
 					<div class="col-span-3">
 						<mat-form-field class="w-full">
-							<mat-label> </mat-label>
-							<mat-select [formControl]="documentTypeFC">
-								<mat-option *ngIf="paymentFG.get('payer_type').value==='Natural'" value="V">V</mat-option>
-								<mat-option *ngIf="paymentFG.get('payer_type').value==='Natural'" value="E">E</mat-option>
+							<mat-label>Monto Abonado (VES)</mat-label>
+							<input formControlName="ves_amount" id='name' type="text" matInput disabled>
+						</mat-form-field>
+					</div>
+					<div class="col-span-3">
+						<mat-form-field class="w-full">
+							<mat-label>Monto Abonado (USD)</mat-label>
+							<input formControlName="usd_amount" id='name' type="text" matInput disabled>
+						</mat-form-field>
+					</div>
+					<div class="col-span-3">
+						<mat-form-field class="w-full">
+							<mat-label>Fecha de abono</mat-label>
+								<input formControlName="payment_date" [value]="currentDate" (click)="picker.open()" matInput [matDatepicker]="picker">
+								<mat-hint>MM/DD/YYYY</mat-hint>
+								<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+					</div>
+				</div>
+				<div *ngIf="paymentFG.get('payer_type').value" [formGroup]="paymentFG" class="grid grid-cols-12 gap-5">
+					<div class="col-span-3">
+						<mat-form-field class="w-full">
+							<mat-label *ngIf="paymentFG.get('payer_type').value==='Natural'">Nombres y Apellidos</mat-label>
+							<mat-label *ngIf="paymentFG.get('payer_type').value==='Juridico'">Razon social</mat-label>
+							<input formControlName="full_name" id='name' type="text" matInput>
+						</mat-form-field>
+					</div>
+					<div class="col-span-3">
+						<div class="grid grid-cols-12 gap-2">
+							<div class="col-span-3">
+								<mat-form-field class="w-full">
+									<mat-label> </mat-label>
+									<mat-select [formControl]="documentTypeFC">
+										<mat-option *ngIf="paymentFG.get('payer_type').value==='Natural'" value="V">V</mat-option>
+										<mat-option *ngIf="paymentFG.get('payer_type').value==='Natural'" value="E">E</mat-option>
 
-								<mat-option *ngIf="paymentFG.get('payer_type').value==='Juridico'" value="J">J</mat-option>
-								<mat-option *ngIf="paymentFG.get('payer_type').value==='Juridico'" value="P">P</mat-option>
-								<mat-option *ngIf="paymentFG.get('payer_type').value==='Juridico'" value="G">G</mat-option>
+										<mat-option *ngIf="paymentFG.get('payer_type').value==='Juridico'" value="J">J</mat-option>
+										<mat-option *ngIf="paymentFG.get('payer_type').value==='Juridico'" value="P">P</mat-option>
+										<mat-option *ngIf="paymentFG.get('payer_type').value==='Juridico'" value="G">G</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div class="col-span-9">
+								<mat-form-field class="w-full">
+									<mat-label *ngIf="paymentFG.get('payer_type').value==='Natural'">Cedula de Identidad</mat-label>
+									<mat-label *ngIf="paymentFG.get('payer_type').value==='Juridico'">RIF</mat-label>
+									<input formControlName="document" id='name' type="text" matInput>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<div class="col-span-3">
+						<mat-form-field class="w-full">
+							<mat-label>Metodo de pago</mat-label>
+							<mat-select formControlName="payment_method">
+								<mat-option value="Transferencia bancaria">Transferencia Bancaria</mat-option>
+								<mat-option value="Pago movil">Pago movil</mat-option>
+								<mat-option value="Efectivo">Efectivo</mat-option>
+								<mat-option value="Cheque">Cheque</mat-option>
+								<mat-option value="Biopago">Biopago</mat-option>
+								<mat-option value="Punto de venta">Punto de venta</mat-option>
 							</mat-select>
 						</mat-form-field>
+					</div>
+					<div class="col-span-3">
+						<mat-form-field class="w-full">
+							<mat-label>Numero de referencia</mat-label>
+							<input formControlName="reference_number" id='name' type="text" matInput>
+						</mat-form-field>
+					</div>
+					<div class="col-span-12">
+						<div>
+							<button (click)="regiterPayment()" class="rounded w-full p-0 bg-primary-300 text-on-primary-300" mat-stroked-button>Registrar mensualidad</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+				<!-- Section -->
+				<div class="grid grid-cols-12">
+					<div class="col-span-3">
+						<div class="text-lg font-medium tracking-tight leading-6 truncate">Detalles de alumno</div>
 					</div>
 					<div class="col-span-9">
-						<mat-form-field class="w-full">
-							<mat-label *ngIf="paymentFG.get('payer_type').value==='Natural'">Cedula de Identidad</mat-label>
-							<mat-label *ngIf="paymentFG.get('payer_type').value==='Juridico'">RIF</mat-label>
-							<input formControlName="document" id='name' type="text" matInput>
-						</mat-form-field>
+						<div class="flex gap-3 justify-end" [formGroup]="seachFormGroup">
+							<div class="w-2/5">
+								<mat-form-field class="w-full">
+									<mat-label>Año de gestion</mat-label>
+									<mat-select [formControl]="yearFC">
+										<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-span-3">
-				<mat-form-field class="w-full">
-					<mat-label>Metodo de pago</mat-label>
-					<mat-select formControlName="payment_method">
-						<mat-option value="Transferencia bancaria">Transferencia Bancaria</mat-option>
-						<mat-option value="Pago movil">Pago movil</mat-option>
-						<mat-option value="Efectivo">Efectivo</mat-option>
-						<mat-option value="Cheque">Cheque</mat-option>
-						<mat-option value="Biopago">Biopago</mat-option>
-						<mat-option value="Punto de venta">Punto de venta</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="col-span-3">
-				<mat-form-field class="w-full">
-					<mat-label>Numero de referencia</mat-label>
-					<input formControlName="reference_number" id='name' type="text" matInput>
-				</mat-form-field>
-			</div>
-			<div class="col-span-12">
-				<div>
-					<button (click)="regiterPayment()" class="rounded w-full p-0 bg-primary-300 text-on-primary-300" mat-stroked-button>Registrar pago</button>
+				<div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+						<table
+								class="min-w-240 overflow-y-visible"
+								mat-table
+								multiTemplateDataRows
+								[dataSource]="paymentData">
+
+								<!-- id -->
+								<ng-container matColumnDef="mes">
+									<th mat-header-cell *matHeaderCellDef>Mes</th>
+									<td mat-cell *matCellDef="let payment">
+										<span class="font-medium">
+											{{months[payment.month]}}
+										</span>
+									</td>
+								</ng-container>
+
+
+								<ng-container matColumnDef="estado">
+									<th mat-header-cell *matHeaderCellDef>Estado</th>
+									<td mat-cell *matCellDef="let payment">
+										<span class="font-medium">
+											<span *ngIf="getPaymentSum(payment) == 0" class="text-red-600">Pendiente</span>
+											<span *ngIf="getPaymentSum(payment) < this.currentMonthPrice && getPaymentSum(payment) > 0" class="text-yellow-600">Parcial</span>
+											<span *ngIf="getPaymentSum(payment) == this.currentMonthPrice" class="text-green-600">Pagado</span>
+										</span>
+									</td>
+								</ng-container>
+
+
+								<ng-container matColumnDef="pagador">
+									<th mat-header-cell *matHeaderCellDef>Monto Abonado (USD)</th>
+									<td mat-cell *matCellDef="let payment">
+										<span class="font-medium">
+											{{getPaymentSum(payment) || 0}} USD
+										</span>
+									</td>
+								</ng-container>
+
+
+								<ng-container matColumnDef="fecha_pago">
+									<th mat-header-cell *matHeaderCellDef>Pagos realizados</th>
+									<td mat-cell *matCellDef="let payment">
+										<span class="font-medium">
+											{{payment.payments.length || 0}}
+										</span>
+									</td>
+								</ng-container>
+
+
+
+
+								<!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+								<ng-container matColumnDef="expandedDetail">
+									<td mat-cell *matCellDef="let element" [attr.colspan]="columns.length">
+										<div class="example-element-detail w-full"
+												[@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+											<div class="w-full" style="padding: 13px 10px 30px;">
+												<table class="simple-table">
+													<thead>
+														<tr>
+															<th>Pagador</th>
+															<th>Fecha de pago</th>
+															<th>Monto de pago (VES)</th>
+															<th>Monto de pago (USD)</th>
+															<th>Referencia</th>
+															<th>Acción</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr *ngFor="let payment of element.payments">
+															<td>{{payment.full_name ? payment.full_name : '-'}}</td>
+															<td>{{payment.payment_date ? payment.payment_date : '-'}}</td>
+															<td>{{payment.ves_amount ? payment.ves_amount : '-'}}</td>
+															<td>{{payment.usd_amount ? payment.usd_amount : '-'}}</td>
+															<td>{{payment.reference_number ? payment.reference_number : '-'}}</td>
+															<td>
+																<mat-icon class="text-red-800 cursor-pointer">delete</mat-icon>
+															</td>
+														</tr>
+												</table>
+											</div>
+										</div>
+									</td>
+								</ng-container>
+
+
+							<tr mat-header-row *matHeaderRowDef="columns"></tr>
+							<tr class="cursor-pointer" mat-row *matRowDef="let element; columns: columns;"
+									class="example-element-row"
+									[class.example-expanded-row]="expandedElement === element"
+									(click)="expandedElement = expandedElement === element ? null : element">
+							</tr>
+							<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+						</table>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-		<!-- Section -->
-		<div class="grid grid-cols-12">
-			<div class="col-span-3">
-				<div class="text-lg font-medium tracking-tight leading-6 truncate">Detalles de alumno</div>
-			</div>
-			<div class="col-span-9">
-				<div class="flex gap-3 justify-end" [formGroup]="seachFormGroup">
-					<div class="w-2/5">
-						<mat-form-field class="w-full">
-							<mat-label>Año de gestion</mat-label>
-							<mat-select [formControl]="yearFC">
-								<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-							</mat-select>
-						</mat-form-field>
-					</div>
+		</mat-tab>
+		<mat-tab label="Pago inscripción">
+			<div class="my-5">
+				<div class="max-w-100 mx-auto text-center">
+					<div>Registro de pago de inscripcion del año escolar <strong>2022-2024</strong> para el alumno <strong>Jose Hernandez</strong></div>
 				</div>
-			</div>
-		</div>
-		<div class="flex flex-col flex-auto mt-2 overflow-x-auto">
-				<table
-						class="min-w-240 overflow-y-visible"
-						mat-table
-						multiTemplateDataRows
-						[dataSource]="paymentData">
-
-						<!-- id -->
-						<ng-container matColumnDef="mes">
-							<th mat-header-cell *matHeaderCellDef>Mes</th>
-							<td mat-cell *matCellDef="let payment">
-								<span class="font-medium">
-									{{months[payment.month]}}
-								</span>
-							</td>
-						</ng-container>
-
-
-						<ng-container matColumnDef="estado">
-							<th mat-header-cell *matHeaderCellDef>Estado</th>
-							<td mat-cell *matCellDef="let payment">
-								<span class="font-medium">
-									<span *ngIf="getPaymentSum(payment) == 0" class="text-red-600">Pendiente</span>
-									<span *ngIf="getPaymentSum(payment) < this.currentMonthPrice && getPaymentSum(payment) > 0" class="text-yellow-600">Parcial</span>
-									<span *ngIf="getPaymentSum(payment) == this.currentMonthPrice" class="text-green-600">Pagado</span>
-								</span>
-							</td>
-						</ng-container>
-
-
-						<ng-container matColumnDef="pagador">
-							<th mat-header-cell *matHeaderCellDef>Monto Abonado (USD)</th>
-							<td mat-cell *matCellDef="let payment">
-								<span class="font-medium">
-									{{getPaymentSum(payment) || 0}} USD
-								</span>
-							</td>
-						</ng-container>
-
-
-						<ng-container matColumnDef="fecha_pago">
-							<th mat-header-cell *matHeaderCellDef>Pagos realizados</th>
-							<td mat-cell *matCellDef="let payment">
-								<span class="font-medium">
-									{{payment.payments.length || 0}}
-								</span>
-							</td>
-						</ng-container>
-
-
-
-
-						<!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-						<ng-container matColumnDef="expandedDetail">
-							<td mat-cell *matCellDef="let element" [attr.colspan]="columns.length">
-								<div class="example-element-detail w-full"
-										[@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-									<div class="w-full" style="padding: 13px 10px 30px;">
-										<table class="simple-table">
-											<thead>
-												<tr>
-													<th>Pagador</th>
-													<th>Fecha de pago</th>
-													<th>Monto de pago (VES)</th>
-													<th>Monto de pago (USD)</th>
-													<th>Referencia</th>
-													<th>Acción</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr *ngFor="let payment of element.payments">
-													<td>{{payment.full_name ? payment.full_name : '-'}}</td>
-													<td>{{payment.payment_date ? payment.payment_date : '-'}}</td>
-													<td>{{payment.ves_amount ? payment.ves_amount : '-'}}</td>
-													<td>{{payment.usd_amount ? payment.usd_amount : '-'}}</td>
-													<td>{{payment.reference_number ? payment.reference_number : '-'}}</td>
-													<td>
-														<mat-icon class="text-red-800 cursor-pointer">delete</mat-icon>
-													</td>
-												</tr>
-										</table>
+				<div class="">
+					<div class="my-4">
+						<div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mb-5">
+							<!-- Section -->
+							<div class="grid grid-cols-12 mb-7">
+								<div class="col-span-6">
+									<div class="text-lg font-medium tracking-tight leading-6 truncate">Registrar pago de inscripción</div>
+									<div>Valor de inscripción (USD): <strong>{{this.enrollmentFee}} USD</strong></div>
+									<div>Valor de inscripción (VES): <strong>{{(this.enrollmentFee * this.dolarBCV) | number: '1.2-2'}} VES</strong></div>
+								</div>
+								<div class="col-span-6">
+									<div class="w-fit ml-auto" [formGroup]="enrollmentFG">
+										<div class="mb-2">
+											<strong>Entidad que realiza el pago</strong>
+										</div>
+										<mat-radio-group formControlName="payer_type" aria-label="Select an option">
+											<mat-radio-button style="margin-right: 20px" value="Natural">Persona Natural</mat-radio-button>
+											<mat-radio-button value="Juridico">Entidad Juridica</mat-radio-button>
+										</mat-radio-group>
 									</div>
 								</div>
-							</td>
-						</ng-container>
+							</div>
+							<div [formGroup]="enrollmentFG" class="grid grid-cols-12 gap-5">
+								<div class="col-span-4">
+									<mat-form-field class="w-full">
+										<mat-label>Monto Abonado (VES)</mat-label>
+										<input formControlName="ves_amount" id='name' type="text" matInput>
+									</mat-form-field>
+								</div>
+								<div class="col-span-4">
+									<mat-form-field class="w-full">
+										<mat-label>Monto Abonado (USD)</mat-label>
+										<input formControlName="usd_amount" id='name' type="text" matInput>
+									</mat-form-field>
+								</div>
+								<div class="col-span-4">
+									<mat-form-field class="w-full">
+										<mat-label>Fecha de abono</mat-label>
+											<input formControlName="payment_date" [value]="currentDate" (click)="picker2.open()" matInput [matDatepicker]="picker2">
+											<mat-hint>MM/DD/YYYY</mat-hint>
+											<mat-datepicker #picker2></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+							<div *ngIf="enrollmentFG.get('payer_type').value" [formGroup]="enrollmentFG" class="grid grid-cols-12 gap-5">
+								<div class="col-span-3">
+									<mat-form-field class="w-full">
+										<mat-label *ngIf="enrollmentFG.get('payer_type').value==='Natural'">Nombres y Apellidos</mat-label>
+										<mat-label *ngIf="enrollmentFG.get('payer_type').value==='Juridico'">Razon social</mat-label>
+										<input formControlName="full_name" id='name' type="text" matInput>
+									</mat-form-field>
+								</div>
+								<div class="col-span-3">
+									<div class="grid grid-cols-12 gap-2">
+										<div class="col-span-3">
+											<mat-form-field class="w-full">
+												<mat-label> </mat-label>
+												<mat-select [formControl]="documentTypeEnrollmentFG">
+													<mat-option *ngIf="enrollmentFG.get('payer_type').value==='Natural'" value="V">V</mat-option>
+													<mat-option *ngIf="enrollmentFG.get('payer_type').value==='Natural'" value="E">E</mat-option>
 
-
-					<tr mat-header-row *matHeaderRowDef="columns"></tr>
-					<tr class="cursor-pointer" mat-row *matRowDef="let element; columns: columns;"
-							class="example-element-row"
-							[class.example-expanded-row]="expandedElement === element"
-							(click)="expandedElement = expandedElement === element ? null : element">
-					</tr>
-					<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-				</table>
-		</div>
-	</div>
+													<mat-option *ngIf="enrollmentFG.get('payer_type').value==='Juridico'" value="J">J</mat-option>
+													<mat-option *ngIf="enrollmentFG.get('payer_type').value==='Juridico'" value="P">P</mat-option>
+													<mat-option *ngIf="enrollmentFG.get('payer_type').value==='Juridico'" value="G">G</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+										<div class="col-span-9">
+											<mat-form-field class="w-full">
+												<mat-label *ngIf="enrollmentFG.get('payer_type').value==='Natural'">Cedula de Identidad</mat-label>
+												<mat-label *ngIf="enrollmentFG.get('payer_type').value==='Juridico'">RIF</mat-label>
+												<input formControlName="document" id='name' type="text" matInput>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+								<div class="col-span-3">
+									<mat-form-field class="w-full">
+										<mat-label>Metodo de pago</mat-label>
+										<mat-select formControlName="payment_method">
+											<mat-option value="Transferencia bancaria">Transferencia Bancaria</mat-option>
+											<mat-option value="Pago movil">Pago movil</mat-option>
+											<mat-option value="Efectivo">Efectivo</mat-option>
+											<mat-option value="Cheque">Cheque</mat-option>
+											<mat-option value="Biopago">Biopago</mat-option>
+											<mat-option value="Punto de venta">Punto de venta</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="col-span-3">
+									<mat-form-field class="w-full">
+										<mat-label>Numero de referencia</mat-label>
+										<input formControlName="reference_number" id='name' type="text" matInput>
+									</mat-form-field>
+								</div>
+								<div class="col-span-12">
+									<div>
+										<button (click)="regiterPaymentEnrollment()" class="rounded w-full p-0 bg-primary-300 text-on-primary-300" mat-stroked-button>Guardar información de inscripción</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
 </div>

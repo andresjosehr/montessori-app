@@ -107,6 +107,14 @@ export class StudentsService {
 		return this._httpClient.post<any>(`${environment.api}/students/register-payment/${studentID}`, data);
 	}
 
+	registerEnrollmentPayment(studentID: any, data: studentPayment): Observable<any> {
+		return this._httpClient.post<any>(`${environment.api}/students/register-enrollment-payment/${studentID}`, data);
+	}
+
+	getEnrollmentPayments(studentID: any): Observable<any> {
+		return this._httpClient.get<any>(`${environment.api}/students/get-enrollment-payment/${studentID}`);
+	}
+
 	getPayments(studentID: any, year: number): Observable<any> {
 		return this._httpClient.get<any>(`${environment.api}/students/payment-control/${studentID}/${year}`);
 	}

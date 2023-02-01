@@ -58,22 +58,47 @@
 							</div>
 					</div>
 				</mat-tab>
-				<mat-tab label="Valor de mensualidad">
+				<mat-tab label="Costos">
 					<div class="p-5">
-						<div class="w-fit m-auto">
-							<mat-form-field class="w-100 m-auto" appearance="fill">
-								<mat-label>Valor expresado en dolares de mensualidad</mat-label>
-								<input [formControl]="priceControl" class="text-center" matInput type="text">
-							</mat-form-field>
-						</div>
-						<div class="w-100 m-auto">
+						<div class="w-160 mx-auto mt-5 mb-5">
 							<fuse-alert [type]="'warning'">
 								<span fuseAlertTitle>Atención</span>
 								El monto expresedo en el campo sera registrado como monto en dolares y la conversion se hará a bolivares a tasa de BCV
 							</fuse-alert>
 						</div>
-						<div class="w-100 m-auto my-5">
-							<button (click)="savePrice()" class="w-full" mat-button style="background-color: #0f172a; color:white">Guardar</button>
+						<div class="flex justify-around">
+							<div class="w-100" [formGroup]="enrollmentFeeFG">
+								<div class="text-center font-bold text-3xl">Inscripción</div>
+								<div class="w-full m-auto">
+									<mat-form-field class="w-100 m-auto" appearance="fill">
+										<mat-label>Año de inscripción</mat-label>
+										<mat-select formControlName="year">
+											<mat-option [value]="year" *ngFor="let year of yearsSelect">{{year}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="w-full m-auto">
+									<mat-form-field class="w-100 m-auto" appearance="fill">
+										<mat-label>Valor de inscripción expresado en dolares</mat-label>
+										<input formControlName="amount_usd" class="text-center" matInput type="text">
+									</mat-form-field>
+								</div>
+								<div class="w-full m-auto my-5">
+									<button (click)="saveEnrollmentFee()" class="w-full" mat-button style="background-color: #0f172a; color:white">Guardar monto inscripción</button>
+								</div>
+							</div>
+							<div class="w-100">
+								<div class="text-center font-bold text-3xl">Mensualidad</div>
+								<div class="w-full m-auto">
+									<mat-form-field class="w-100 m-auto" appearance="fill">
+										<mat-label>Valor de inscripción expresado en dolares</mat-label>
+										<input [formControl]="priceControl" class="text-center" matInput type="text">
+									</mat-form-field>
+								</div>
+								<div class="w-full m-auto my-5">
+									<button (click)="savePrice()" class="w-full" mat-button style="background-color: #0f172a; color:white">Guardar monto mensualidad</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</mat-tab>

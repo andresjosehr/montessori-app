@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GlobalService } from 'app/services/global/global.service';
@@ -22,14 +22,29 @@ export class PaymentControlListComponent implements OnInit {
 
 	paymentsSummaryByYear = [];
 
+	enrollmentFeeFG: FormGroup;
+
+	enrollmentYears;
+
   constructor(
 		private _paymentControlService: PaymentControlService,
 		private _fuseConfirmationService: FuseConfirmationService,
 		private _globalService: GlobalService,
+		private _formBuilder: FormBuilder,
 		private _router: Router
 	) { }
 
   ngOnInit(): void {
+
+		this.enrollmentFeeFG = this._formBuilder.group({
+			year: [this.currentYear],
+			amount_usd: [0],
+		});
+
+		this.enrollmentFeeFG.get('year').valueChanges.subscribe(y => {
+			this.enrollmentFeeFG.get('amount_usd').setValue(this.enrollmentYears.find(year => year.year === y).amount_usd, {emitEvent: false});
+		})
+
 		this._paymentControlService.getDolarBCV().subscribe(response => {
 			this.dolarPrice = response.data;
 		});
@@ -42,12 +57,12 @@ export class PaymentControlListComponent implements OnInit {
 			this.monthsControl = response.data
 			const years = this.monthsControl.map(month => month.year);
 			this.yearsSelect = years.filter((year, index) => years.indexOf(year) === index);
+			this.getEnrollmentsByYear();
 		})
 
 		this._paymentControlService.getMonthPrice().subscribe(response => {
 			this.priceControl.setValue(response.data);
 			this.currentMonthPrice = this.priceControl.value;
-
 		})
 
 		// Allow only numbers with 3 decimals. If user write dot, it will be replaced by comma.
@@ -65,6 +80,21 @@ export class PaymentControlListComponent implements OnInit {
 			this.priceControl.setValue(value, {emitEvent: false});
 		});
   }
+
+	getEnrollmentsByYear(): void {
+
+		this._paymentControlService.getEnrollmentFees().subscribe(response => {
+			this.enrollmentYears=this.yearsSelect.map(year => {
+				return {
+					year: year,
+					amount_usd: response.data.find(enrollment => enrollment.year === year)?.amount_usd || 0,
+				}
+			});
+			console.log(this.enrollmentYears);
+			this.enrollmentFeeFG.get('year').setValue(this.currentYear);
+		});
+	}
+
 
 	randNumber(): number{
 		return Math.floor(Math.random() * 100);
@@ -107,6 +137,13 @@ export class PaymentControlListComponent implements OnInit {
 	goToPaymentMonth(month: number): void {
 		const year = this.currentYear;
 		this._router.navigate([`/control-de-pagos/${year}/${month+1}`]);
+	}
+
+	saveEnrollmentFee() {
+		const values = this.enrollmentFeeFG.value;
+		this._paymentControlService.saveEnrollmentFee(values).subscribe(response => {
+			this._globalService.openSnackBar('Cuota de inscripción actualizada correctamente', 4000, 'success');
+		});
 	}
 
 }

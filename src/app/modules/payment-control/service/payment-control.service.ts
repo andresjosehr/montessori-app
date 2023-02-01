@@ -42,4 +42,13 @@ export class PaymentControlService {
 		return this._httpClient.get(`${environment.api}/payment-control/get-payments-by-month/${year}/${month}`);
 	 }
 
+	 saveEnrollmentFee(values: {year: number | string, amount_usd: number | string}): Observable<any> {
+		return this._httpClient.post(`${environment.api}/save-enrollment-fee`, values);
+	 }
+
+	 getEnrollmentFees(): Observable<any> {
+		return this._httpClient.get(`${environment.api}/get-enrollment-fees`);
+	 }
+
+
 }

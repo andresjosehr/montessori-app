@@ -18,6 +18,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatRadioModule} from '@angular/material/radio';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
+import { MatTabsModule } from '@angular/material/tabs';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { PaymentControlEnrollmentComponent } from './payment-controlenrollment-payment-control.component';
+
 
 
 
@@ -25,7 +29,7 @@ import { FuseConfirmationModule } from '@fuse/services/confirmation';
 
 @NgModule({
   declarations: [
-    PaymentControlComponent
+    PaymentControlComponent,
   ],
   imports: [
     CommonModule,
@@ -43,9 +47,11 @@ import { FuseConfirmationModule } from '@fuse/services/confirmation';
 		NgxMatSelectSearchModule,
 		FuseAlertModule,
 		MatPaginatorModule,
+		MatTabsModule,
 		FileInputModule,
 		MatIconModule,
 		MatDatepickerModule,
+		MatCheckboxModule,
 		MatNativeDateModule,
 		FuseConfirmationModule
   ]

@@ -9,7 +9,8 @@ import { PaymentControlModule } from './payment-control/payment-control.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
 		RouterModule.forChild(studentsRoutes),

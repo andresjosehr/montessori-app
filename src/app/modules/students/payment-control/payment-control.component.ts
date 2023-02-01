@@ -11,6 +11,7 @@ import { PaymentControlService } from 'app/modules/payment-control/service/payme
 import { GlobalService } from 'app/services/global/global.service';
 import { Subject, takeUntil } from 'rxjs';
 import { StudentsService, SearchObject } from '../service/students.service';
+import { PaymentControlEnrollmentComponent } from './payment-controlenrollment-payment-control.component';
 
 @Component({
   selector: 'app-payment-control',
@@ -24,7 +25,7 @@ import { StudentsService, SearchObject } from '../service/students.service';
     ]),
   ],
 })
-export class PaymentControlComponent implements OnInit {
+export class PaymentControlComponent extends PaymentControlEnrollmentComponent implements OnInit {
 
   columns: Array<string> = ['mes', 'estado', 'pagador', 'fecha_pago'];
 	dataSource: MatTableDataSource<any>;
@@ -54,14 +55,16 @@ export class PaymentControlComponent implements OnInit {
 
 
   constructor(
-		private _studentsService: StudentsService,
-		private _activatedRoute: ActivatedRoute,
+		public _studentsService: StudentsService,
+		public _activatedRoute: ActivatedRoute,
 		private _router: Router,
-		private _formBuilder: FormBuilder,
-		private _globalService: GlobalService,
-		private _paymentControlService: PaymentControlService,
+		public _formBuilder: FormBuilder,
+		public _globalService: GlobalService,
+		public _paymentControlService: PaymentControlService,
 		private _fuseConfirmationService: FuseConfirmationService,
-	) { }
+	) {
+		super(_formBuilder , _studentsService, _globalService, _activatedRoute, _paymentControlService);
+	}
 
 
   ngOnInit(): void {
