@@ -37,7 +37,7 @@ export class StudentsService {
 		return this._httpClient.get<any>(`${environment.api}/students/get-all`, {params});
 	}
 
-	get(id: string): Observable<any> {
+	get(id: string | number): Observable<any> {
 		return this._httpClient.get<any>(`${environment.api}/students/${id}`);
 	}
 

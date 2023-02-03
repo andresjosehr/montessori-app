@@ -3,7 +3,7 @@
 	<div class="grid sm:grid-cols-2 gap-8 w-full mb-6">
 		<div class="w-full col-span-1">
 			<div class="text-3xl font-bold">Control de pagos</div>
-			<div class="text-secondary">Gestiona la informacion de pago para el alumno: <strong>José Andres Hernandez</strong></div>
+			<div class="text-secondary">Gestiona la informacion de pago para el alumno: <strong>{{studentData.name}} {{studentData.last_name}}</strong></div>
 		</div>
 		<div class="w-full col-span-1">
 			<div class='text-right'>
@@ -56,6 +56,9 @@
 									<mat-select formControlName="year">
 										<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
 									</mat-select>
+									<mat-error *ngIf="paymentFG.get('year').hasError('required')">
+											El año es requerido
+									</mat-error>
 								</mat-form-field>
 							</div>
 							<div class="col-span-7">
@@ -64,6 +67,9 @@
 									<mat-select formControlName="month">
 										<mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
 									</mat-select>
+									<mat-error *ngIf="paymentFG.get('month').hasError('required')">
+										El mes es requerido
+									</mat-error>
 								</mat-form-field>
 							</div>
 						</div>
@@ -72,12 +78,20 @@
 						<mat-form-field class="w-full">
 							<mat-label>Monto Abonado (VES)</mat-label>
 							<input formControlName="ves_amount" id='name' type="text" matInput disabled>
+							<mat-hint *ngIf="(paymentFG.get('month').value || paymentFG.get('month').value==0) && paymentFG.get('year').value">Monto restante: {{(this.amountValidation*this.dolarBCV) - (paymentFG.get('ves_amount').value || 0)}} VES</mat-hint>
+							<mat-error *ngIf="paymentFG.get('ves_amount').hasError('required')">
+								El monto es requerido
+							</mat-error>
 						</mat-form-field>
 					</div>
 					<div class="col-span-3">
 						<mat-form-field class="w-full">
 							<mat-label>Monto Abonado (USD)</mat-label>
 							<input formControlName="usd_amount" id='name' type="text" matInput disabled>
+							<mat-hint *ngIf="(paymentFG.get('month').value || paymentFG.get('month').value==0) && paymentFG.get('year').value">Monto restante: {{this.amountValidation - (paymentFG.get('usd_amount').value || 0)}} USD</mat-hint>
+							<mat-error *ngIf="paymentFG.get('usd_amount').hasError('required')">
+								El monto es requerido
+							</mat-error>
 						</mat-form-field>
 					</div>
 					<div class="col-span-3">
@@ -86,6 +100,9 @@
 								<input formControlName="payment_date" [value]="currentDate" (click)="picker.open()" matInput [matDatepicker]="picker">
 								<mat-hint>MM/DD/YYYY</mat-hint>
 								<mat-datepicker #picker></mat-datepicker>
+								<mat-error *ngIf="paymentFG.get('payment_date').hasError('required')">
+									La fecha es requerida
+								</mat-error>
 						</mat-form-field>
 					</div>
 				</div>
@@ -95,6 +112,9 @@
 							<mat-label *ngIf="paymentFG.get('payer_type').value==='Natural'">Nombres y Apellidos</mat-label>
 							<mat-label *ngIf="paymentFG.get('payer_type').value==='Juridico'">Razon social</mat-label>
 							<input formControlName="full_name" id='name' type="text" matInput>
+							<mat-error *ngIf="paymentFG.get('full_name').hasError('required')">
+								El nombre es requerido
+							</mat-error>
 						</mat-form-field>
 					</div>
 					<div class="col-span-3">
@@ -117,6 +137,9 @@
 									<mat-label *ngIf="paymentFG.get('payer_type').value==='Natural'">Cedula de Identidad</mat-label>
 									<mat-label *ngIf="paymentFG.get('payer_type').value==='Juridico'">RIF</mat-label>
 									<input formControlName="document" id='name' type="text" matInput>
+									<mat-error *ngIf="paymentFG.get('document').hasError('required')">
+										El documento es requerido
+									</mat-error>
 								</mat-form-field>
 							</div>
 						</div>
@@ -132,6 +155,9 @@
 								<mat-option value="Biopago">Biopago</mat-option>
 								<mat-option value="Punto de venta">Punto de venta</mat-option>
 							</mat-select>
+							<mat-error *ngIf="paymentFG.get('payment_method').hasError('required')">
+								El metodo de pago es requerido
+							</mat-error>
 						</mat-form-field>
 					</div>
 					<div class="col-span-3">
@@ -267,7 +293,7 @@
 		<mat-tab label="Pago inscripción">
 			<div class="my-5">
 				<div class="max-w-100 mx-auto text-center">
-					<div>Registro de pago de inscripcion del año escolar <strong>2022-2024</strong> para el alumno <strong>Jose Hernandez</strong></div>
+					<div>Registro de pago de inscripcion del año escolar <strong>2023-2024</strong> para el alumno <strong>{{studentData.name}} {{studentData.last_name}}</strong></div>
 				</div>
 				<div class="">
 					<div class="my-4">

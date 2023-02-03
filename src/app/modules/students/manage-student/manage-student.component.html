@@ -80,7 +80,18 @@
 								</mat-error>
 							</mat-form-field>
 						</div>
-						<div class="col-span-2">
+						<div class="col-span-1">
+							<mat-form-field class="w-full">
+								<mat-label>Cedula estudiantil</mat-label>
+								<input id='document' type="text" formControlName="document" matInput>
+								<mat-error *ngFor="let i of _globalService.errorsLength(studentForm.get('document'))">
+									<ng-container *ngIf="studentForm.get('document').hasError(i)">
+										{{studentForm.get('document').errors[i]}}
+									</ng-container>
+								</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="col-span-1">
 							<mat-form-field class="w-full">
 								<mat-label>Grado</mat-label>
 								<mat-select formControlName="level_id">

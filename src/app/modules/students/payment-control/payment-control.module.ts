@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { PaymentControlComponent } from './payment-control.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -20,7 +20,6 @@ import {MatRadioModule} from '@angular/material/radio';
 import { FuseConfirmationModule } from '@fuse/services/confirmation';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { PaymentControlEnrollmentComponent } from './payment-controlenrollment-payment-control.component';
 
 
 
@@ -54,6 +53,8 @@ import { PaymentControlEnrollmentComponent } from './payment-controlenrollment-p
 		MatCheckboxModule,
 		MatNativeDateModule,
 		FuseConfirmationModule
-  ]
+  ],
+	providers: [
+	]
 })
 export class PaymentControlModule { }

@@ -1,7 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -53,6 +53,8 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 	abonatedVESFC = new FormControl();
 	abonatedUSDFC = new FormControl();
 
+	studentData;
+
 
   constructor(
 		public _studentsService: StudentsService,
@@ -91,16 +93,16 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 		});
 
 		this.paymentFG = this._formBuilder.group({
-			full_name: [],
-			document: [],
-			month: [],
-			year: [],
-			ves_amount: [],
-			usd_amount: [],
-			payment_date: [],
-			payment_method: [],
+			full_name: [, Validators.required],
+			document: [, Validators.required],
+			month: [, Validators.required],
+			year: [, Validators.required],
+			ves_amount: [, Validators.required],
+			usd_amount: [, Validators.required],
+			payment_date: [, Validators.required],
+			payment_method: [, Validators.required],
 			reference_number: [],
-			payer_type: []
+			payer_type: [, Validators.required]
 		});
 
 		this.paymentFG.get('ves_amount').valueChanges.subscribe((value) => {
@@ -123,14 +125,17 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 
 		this.paymentFG.get('year').valueChanges.subscribe((value) => {
 			this.amountValidation = this.currentMonthPrice;
-			if(value === this.yearFC.value && this.paymentFG.get('month').value){
+			// console.log(value, this.yearFC.value, this.paymentFG.get('month').value)
+			// console.log(this.paymentData.find((payment) => payment.month === this.paymentFG.get('month').value));
+			// console.log(this.paymentData);
+			if(value === this.yearFC.value && (this.paymentFG.get('month').value || this.paymentFG.get('month').value==0) ){
 				this.amountValidation = this.paymentData.find((payment) => payment.month === this.paymentFG.get('month').value).debt;
 			}
 		});
 
 		this.paymentFG.get('month').valueChanges.subscribe((value) => {
 			this.amountValidation = this.currentMonthPrice;
-			if(this.paymentFG.get('year').value === this.yearFC.value && value){
+			if(this.paymentFG.get('year').value === this.yearFC.value && (value || value == 0)){
 				this.amountValidation = this.paymentData.find((payment) => payment.month === value).debt;
 			}
 		});
@@ -157,6 +162,7 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 			if(params.id){
 				this.studentID = params.id;
 				this.getPaymentData((new Date()).getFullYear());
+				this.getStudentData();
 			}
 		});
 
@@ -165,20 +171,24 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 		});
   }
 
+	getStudentData(): void {
+		this._studentsService.get(this.studentID).subscribe((response: any) => {
+			this.studentData = response.data;
+			console.log(response);
+		})
+	}
+
 	getPaymentData(year): void {
 		this._studentsService.getPayments(this.studentID, year).subscribe((response: any) => {
 			this.paymentData = this.paymentData.map((payment, index) => {
-				console.log(response.data.filter((payment) => payment.month === index + 1))
 				return {
 					...payment,
-					debt: response.data.filter((payment) => payment.month === index + 1).reduce((acc, payment) => {
-						// console.log(acc, payment.usd_amount)
+					debt: (response.data.filter((payment) => payment.month === index + 1).reduce((acc, payment) => {
 						return acc - payment.usd_amount
-					}, payment.debt),
-					payments: response.data.filter((payment) => payment.month === index + 1)
+					}, payment.debt) || 0),
+					payments: (response.data.filter((payment) => payment.month === index + 1) || [])
 				}
 			});
-			console.log(this.paymentData);
 		});
 	}
 
@@ -189,6 +199,13 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 	}
 
 	regiterPayment(): void {
+
+		if(this.paymentFG.invalid){
+			this._globalService.openSnackBar('Debes ingresar la información de los campos obligatorios', 2000, 'error');
+			this.paymentFG.markAllAsTouched();
+			return;
+		}
+
 		this._studentsService.registerPayment(this.studentID, this.paymentFG.value).subscribe((response: any) => {
 			this._globalService.openSnackBar('Pago registrado', 2000, 'success');
 			if(this.yearFC.value == (new Date()).getFullYear()){
@@ -216,13 +233,6 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 		this._router.navigate(['alumnos', 'control-de-pago', id]);
 	}
 
-
-	resendSignUpEmail(id: number): void{
-		this._studentsService.resendSignUpEmail(id).subscribe((response) => {
-			this._globalService.openSnackBar('Correo enviado', 5000, 'success');
-			console.log(response);
-		});
-	}
 
 	openDialog(id): void {
 		const dialogRef = this._fuseConfirmationService.open({

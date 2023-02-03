@@ -52,7 +52,8 @@ export class ManageStudentComponent implements OnInit {
 			last_name           : [''],
 			representative_name : [''],
 			representative_phone: [''],
-			level_id            : ['']
+			level_id            : [''],
+			document            : ['']
 		});
 	}
 
