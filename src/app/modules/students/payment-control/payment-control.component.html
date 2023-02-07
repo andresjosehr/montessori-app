@@ -269,7 +269,7 @@
 															<td>{{payment.usd_amount ? payment.usd_amount : '-'}}</td>
 															<td>{{payment.reference_number ? payment.reference_number : '-'}}</td>
 															<td>
-																<mat-icon class="text-red-800 cursor-pointer">delete</mat-icon>
+																<mat-icon (click)="destroyPayment(payment.id)" class="text-red-800 cursor-pointer">delete</mat-icon>
 															</td>
 														</tr>
 												</table>

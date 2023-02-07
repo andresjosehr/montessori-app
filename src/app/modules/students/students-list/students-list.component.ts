@@ -29,7 +29,7 @@ export class StudentsListComponent implements OnInit {
 	companies: any; 	companiesFiltered: any;;
 	professions: any; 	professionsFiltered: any;;
 
-	seachFormGroup: FormGroup;
+	searchFC = new FormControl();
   constructor(
 		private _studentsService: StudentsService,
 		private _activatedRoute: ActivatedRoute,
@@ -40,14 +40,11 @@ export class StudentsListComponent implements OnInit {
 	) { }
 
 	paginate(event: PaginatorEvent): void {
-		this.getStudents(this.getValues(), {page: event.pageIndex + 1, perPage: event.pageSize});
+		this.getStudents({searchString: this.searchFC.value}, {page: event.pageIndex + 1, perPage: event.pageSize});
 	}
 
   ngOnInit(): void {
-		this.seachFormGroup = this._formBuilder.group({
-			file: [null], city: [null], company: [null], profession: [null],
-			fileSelect: ['Seleccionar'], citySelect: ['Seleccionar'], companySelect: ['Seleccionar'], professionSelect: ['Seleccionar'],
-		});
+
 
 		this._activatedRoute.params.pipe(takeUntil(this._unsubscribeAll)).subscribe((params) => {
 			if (params.m) {
@@ -89,35 +86,13 @@ export class StudentsListComponent implements OnInit {
 	}
 
 	filterStudents(): void {
-		console.log(this.getValues());
-		this.getStudents(this.getValues());
+		const value = {searchString: this.searchFC.value}
+		this.getStudents(value);
 		// const filterValue = value.toLowerCase();
 		// return this.files.filter(option => option.toLowerCase().includes(filterValue));
 	}
 
-	getValues(): SearchObject{
-		const values = {};
-		if(this.seachFormGroup.value.fileSelect && this.seachFormGroup.value.fileSelect!=='Seleccionar'){
-			values['file'] = this.seachFormGroup.value.fileSelect;
-		}
-		if(this.seachFormGroup.value.citySelect && this.seachFormGroup.value.citySelect!=='Seleccionar'){
-			values['city'] = this.seachFormGroup.value.citySelect;
-		}
-		if(this.seachFormGroup.value.companySelect && this.seachFormGroup.value.companySelect!=='Seleccionar'){
-			values['company'] = this.seachFormGroup.value.companySelect;
-		}
-		if(this.seachFormGroup.value.professionSelect && this.seachFormGroup.value.professionSelect!=='Seleccionar'){
-			values['profession'] = this.seachFormGroup.value.professionSelect;
-		}
-		return values;
-	}
 
-	export(): void{
-		this._studentsService.getAll(this.getValues()).subscribe((response) => {
-			const fileName = 'studentos';
-			this._globalService.saveDataAsCSV(response.data, fileName);
-		});
-	}
 
 	resendSignUpEmail(id: number): void{
 		this._studentsService.resendSignUpEmail(id).subscribe((response) => {

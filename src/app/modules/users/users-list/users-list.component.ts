@@ -16,7 +16,7 @@ import { UsersService, SearchObject } from '../service/users.service';
 })
 export class UsersListComponent implements OnInit {
 
-	columns: Array<string> = ['id', 'nombres', 'email', 'role', 'broker_phone', 'broker_address', 'status','acciones'];
+	columns: Array<string> = ['id', 'nombres', 'email', 'role', 'status','acciones'];
 	dataSource: MatTableDataSource<any>;
 	usersPaginated: any;
 	m: '1' | '2' | null = null;

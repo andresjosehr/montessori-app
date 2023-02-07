@@ -234,7 +234,7 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 	}
 
 
-	openDialog(id): void {
+	destroyPayment(id): void {
 		const dialogRef = this._fuseConfirmationService.open({
 			title: 'Atención',
 			message: '¿Está seguro que desea eliminar este pago?. Esta acción no se puede deshacer.',
@@ -260,12 +260,13 @@ export class PaymentControlComponent extends PaymentControlEnrollmentComponent i
 		dialogRef.afterClosed().subscribe(result => {
 			if(result === 'confirmed'){
 				this._paymentControlService.delete(id).subscribe((response) => {
-					this._globalService.openSnackBar('Alumno eliminado', 5000, 'success');
+					this._globalService.openSnackBar('Pago eliminado', 5000, 'success');
 					this.getPaymentData(this.yearFC.value);
 				});
 			}
 		});
 	}
+
 
 	getPaymentSum(payment): number{
 		return payment.payments.reduce((acc, payment) => {

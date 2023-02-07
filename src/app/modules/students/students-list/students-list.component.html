@@ -27,11 +27,11 @@
 				<div class="text-lg font-medium tracking-tight leading-6 truncate">Detalles de alumno</div>
 			</div>
 			<div class="col-span-9">
-				<div class="flex gap-3 justify-end" [formGroup]="seachFormGroup">
+				<div class="flex gap-3 justify-end" [formGroup]="searchFC">
 					<div class="w-2/5">
 						<mat-form-field class="w-full">
 							<mat-label>Buscar Alumno</mat-label>
-							<input type="text" matInput>
+							<input [formControl]="searchFC" type="text" matInput>
 						</mat-form-field>
 					</div>
 					<div class="w-1/5">

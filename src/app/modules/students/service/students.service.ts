@@ -17,6 +17,7 @@ export class StudentsService {
 
 
 	getList(search: SearchObject, paginatorParams?: PaginatorParams): Observable<any> {
+		console.log(search);
 		const params = new HttpParams({
 			fromObject: {
 				...paginatorParams,
@@ -135,8 +136,5 @@ interface studentPayment {
 }
 
 export interface SearchObject{
-	city?: string;
-	company?: string;
-	profession?: string;
-	file?: string;
+	searchString?: string;
 }

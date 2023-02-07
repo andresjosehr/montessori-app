@@ -59,6 +59,24 @@ export class PaymentControlEnrollmentComponent implements OnInit {
 				this.documentTypeEnrollmentFG.setValue('J');
 			}
 		});
+
+		this.enrollmentFG.get('ves_amount').valueChanges.subscribe((value) => {
+			let abonatedUSDFC = parseFloat((value / this.dolarBCV).toFixed(2));
+			if(abonatedUSDFC > this.enrollmentFee){
+				abonatedUSDFC = this.enrollmentFee;
+				this.enrollmentFG.get('ves_amount').setValue(this.enrollmentFee * this.dolarBCV, {emitEvent: false});
+			}
+			this.enrollmentFG.get('usd_amount').setValue(abonatedUSDFC, {emitEvent: false});
+		});
+
+		this.enrollmentFG.get('usd_amount').valueChanges.subscribe((value) => {
+			let abonatedVESFC = parseFloat((value * this.dolarBCV).toFixed(2));
+			if(abonatedVESFC > this.enrollmentFee * this.dolarBCV){
+				abonatedVESFC = this.enrollmentFee * this.dolarBCV;
+				this.enrollmentFG.get('usd_amount').setValue(this.enrollmentFee, {emitEvent: false});
+			}
+			this.enrollmentFG.get('ves_amount').setValue(abonatedVESFC, {emitEvent: false});
+		});
 	}
 
 	getBCV(){
@@ -73,7 +91,6 @@ export class PaymentControlEnrollmentComponent implements OnInit {
 		this._studentsService.getEnrollmentPayments(this.estudianteID).subscribe((response: any) => {
 			this.paymentEnrollmentData = response.data;
 			this.enrollmentFG.patchValue(this.paymentEnrollmentData);
-			console.log(this.paymentEnrollmentData);
 		});
 	}
 
